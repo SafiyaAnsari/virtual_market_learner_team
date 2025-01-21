@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    
+    <link rel="shortcut icon" type="image/jpg" href="/favicon.webp" >
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #35424a;
+    color: #ffffff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+main {
+    padding: 20px;
+}
+
+section {
+    background: #ffffff;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(90, 119, 195, 0.1);
+}
+
+h2 {
+    color: #35424a;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #35424a;
+    outline: none;
+}
+
+button {
+    background: #35424a;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #35424a;
+    color: #ffffff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Custom styles for alerts */
+.alert {
+    display: none;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.alert.success {
+    background-color: #4CAF50; /* Green */
+}
+
+.alert.error {
+    background-color: #f44336; /* Red */
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Inventory Management System</h1>
+        <nav>
+            <ul>
+                <li><a href="#catalogue">Catalogue Creation</a></li>
+                <li><a href="#bulk-upload">Bulk Upload</a></li>
+                <li><a href="#real-time">Real-Time Updates</a></li>
+                <li><a href="#inventory-publishing">Inventory Publishing</a></li>
+                <li><a href="#payment-report">Payment & Settlement Report</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="catalogue">
+            <h2>Catalogue Creation</h2>
+            <form id="catalogue-form">
+                <input type="text" placeholder="Item Name" required>
+                <input type="number" placeholder="Quantity" required>
+                <input type="text" placeholder="Price" required>
+                <button type="submit">Add to Catalogue</button>
+            </form>
+        </section>
+
+        <section id="bulk-upload">
+            <h2>Bulk Upload</h2>
+            <input type="file" id="file-input" accept=".csv">
+            <button id="upload-button">Upload</button>
+        </section>
+
+        <section id="real-time">
+            <h2>Real-Time Updates</h2>
+            <div id="updates"></div>
+        </section>
+
+        <section id="inventory-publishing">
+            <h2>Inventory Publishing</h2>
+            <button id="publish-button">Publish Inventory</button>
+        </section>
+
+        <section id="payment-report">
+            <h2>Payment & Settlement Report</h2>
+            <button id="report-button">Generate Report</button>
+            <div id="report-output"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Inventory Management System</p>
+    </footer>
+
+    <script>
+        document.getElementById('catalogue-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    showAlert('Item added to catalogue!', 'success');
+});
+
+document.getElementById('upload-button').addEventListener('click', function() {
+    const fileInput = document.getElementById('file-input');
+    if (fileInput.files.length > 0) {
+        showAlert('File uploaded successfully!', 'success');
+    } else {
+        showAlert('Please select a file to upload.', 'error');
+    }
+});
+
+document.getElementById('publish-button').addEventListener('click', function() {
+    showAlert('Inventory published successfully!', 'success');
+});
+
+document.getElementById('report-button').addEventListener('click', function() {
+    const reportOutput = document.getElementById('report-output');
+    reportOutput.innerHTML = `
+        <h3>Payment & Settlement Report</h3>
+        <p>Total Sales: $5000</p>
+        <p>Total Settlements: $4500</p>
+        <p>Pending Settlements: $500</p>
+    `;
+    showAlert('Report generated successfully!', 'success');
+});
+
+// Function to show alerts
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert ${type}`;
+    alertDiv.innerText = message;
+
+    // Style the alert to position it relative to the viewport
+    alertDiv.style.position = 'fixed'; // Fixed position relative to viewport
+    alertDiv.style.top = '10px';      // Distance from the top of the viewport
+    alertDiv.style.right = '10px';    // Distance from the right of the viewport
+    alertDiv.style.zIndex = '9999';   // Ensure it's on top of other elements
+    alertDiv.style.padding = '10px';
+    alertDiv.style.backgroundColor = type === 'success' ? 'green' : 'red';
+    alertDiv.style.color = 'white';
+    alertDiv.style.borderRadius = '5px';
+    alertDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+
+    document.body.appendChild(alertDiv); // Append to the body
+    alertDiv.style.display = 'block';
+
+    // Automatically hide the alert after 3 seconds
+    setTimeout(() => {
+        alertDiv.style.display = 'none';
+        alertDiv.remove();
+    }, 3000);
+}
+
+    </script>
+</body>
+</html>
